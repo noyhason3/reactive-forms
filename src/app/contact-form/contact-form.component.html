@@ -1,0 +1,12 @@
+<section>
+    <h1>D&D Generator</h1>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="contact-form">
+            <input type="text" placeholder="name" formControlName="name">
+            <input type="number" placeholder="age" formControlName="age">
+            <input type="email" placeholder="email" formControlName="email">
+
+        <button type="submit">Submit</button>
+
+        <pre>{{form.value|json}}</pre>
+    </form>
+</section>
