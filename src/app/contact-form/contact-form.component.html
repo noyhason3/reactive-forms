@@ -2,10 +2,16 @@
     <h1>D&D Generator</h1>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="contact-form">
             <input type="text" placeholder="name" formControlName="name">
+            <div *ngIf="name?.hasError('required')">
+                name is required
+            </div>
+            <div *ngIf="name?.hasError('invalidName') && !name?.hasError('required')">
+                name is invalid
+            </div>
             <input type="number" placeholder="age" formControlName="age">
             <input type="email" placeholder="email" formControlName="email">
 
-        <button type="submit">Submit</button>
+        <button type="submit" [disabled]="form.invalid">Submit</button>
 
         <pre>{{form.value|json}}</pre>
     </form>
