@@ -1,15 +1,47 @@
 <section>
     <h1>D&D Generator</h1>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="contact-form">
+        <div formGroupName="detail">
             <input type="text" placeholder="name" formControlName="name">
-            <div *ngIf="name?.hasError('required')">
+            <div *ngIf="this.form.get('detail.name')?.hasError('required')">
                 name is required
             </div>
-            <div *ngIf="name?.hasError('invalidName') && !name?.hasError('required')">
+            <div
+                *ngIf="this.form.get('detail.name')?.hasError('invalidName') && !this.form.get('detail.name')?.hasError('required')">
                 name is invalid
             </div>
             <input type="number" placeholder="age" formControlName="age">
             <input type="email" placeholder="email" formControlName="email">
+        </div>
+
+        <div formGroupName="color">
+            <select formControlName="colorName">
+                <option value="">Select color</option>
+                <option value="red">red</option>
+                <option value="blue">blue</option>
+                <option value="yellow">yellow</option>
+                <option value="green">green</option>
+            </select>
+            <input type="number" formControlName="quantity" step="5" min="5" max="100">
+            <button type="button" (click)="onAdd()" [disabled]="stockExists || notSelected">Add color</button>
+            <div *ngIf="stockExists">
+                Color already exists in stock!
+            </div>
+        </div>
+
+        <div formArrayName="stock">
+            <div *ngFor="let item of stocks; let i = index;">
+
+                <div [formGroupName]="i">
+                    {{ item.value.colorName }} -
+                    <input type="number" formControlName="quantity" step="5" min="5" max="100"
+                        [value]="item.value.quantity">
+                </div>
+                <button type="button" (click)="onRemove(item,i)">
+                    Remove
+                </button>
+            </div>
+        </div>
 
         <button type="submit" [disabled]="form.invalid">Submit</button>
 
